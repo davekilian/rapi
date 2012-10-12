@@ -30,3 +30,6 @@ pip-log.txt
 *.swo
 *.swp
 
+# Top secret!
+.username
+.password
