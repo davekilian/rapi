@@ -1,0 +1,44 @@
+
+Request
+-------
+
+2012-06-17 09:39:19 GET http://direct.rhapsody.com/metadata/data/getImageForAlbum.xml?cobrandId=40134&width=500&defineAction=-1&albumId=Alb.302949&developerKey=4E1C2E3G4C9H9A2F&height=500&                                                
+                        ← 200 text/xml 237B                                                                                                                                                                                                 
+Request                                                                                                               Response                                                                                                              
+Host:              direct.rhapsody.com                                                                                                                                                                                                      
+User-Agent:        Rhapsody/2.2.11 CFNetwork/548.1.4 Darwin/11.0.0                                                                                                                                                                          
+Accept:            */*                                                                                                                                                                                                                      
+Accept-Encoding:   gzip,deflate                                                                                                                                                                                                             
+Accept-Language:   en-us                                                                                                                                                                                                                    
+Connection:        keep-alive                                                                                                                                                                                                               
+Proxy-Connection:  keep-alive    
+
+
+Response
+--------
+
+Server:            Apache-Coyote/1.1                                                                                                                                                                                                        
+Content-Type:      text/xml;charset=UTF-8                                                                                                                                                                                                   
+Cteonnt-Length:    321                                                                                                                                                                                                                      
+X-Varnish:         2612373040                                                                                                                                                                                                               
+Cneonction:        close                                                                                                                                                                                                                    
+Content-Encoding:  gzip                                                                                                                                                                                                                     
+Content-Length:    237                                                                                                                                                                                                                      
+Expires:           Sun, 17 Jun 2012 16:39:19 GMT                                                                                                                                                                                            
+Cache-Control:     max-age=0, no-cache, no-store                                                                                                                                                                                            
+Pragma:            no-cache                                                                                                                                                                                                                 
+Date:              Sun, 17 Jun 2012 16:39:19 GMT                                                                                                                                                                                            
+Connection:        keep-alive                                                                                                                                                                                                               
+Vary:              Accept-Encoding                                                                                                                                                                                                          
+[decoded gzip] XML-like data                                                                                                                                                                                                                
+<?xml version='1.0' encoding='UTF-8'?>                                                                                                                                                                                                      
+<ImageMetadata>                                                                                                                                                                                                                             
+  <copyright>Courtesy of: EMI</copyright>                                                                                                                                                                                                   
+  <height>500</height>                                                                                                                                                                                                                      
+  <imageFormat>jpg</imageFormat>                                                                                                                                                                                                            
+  <imageId>img.43906942</imageId>                                                                                                                                                                                                           
+  <title>Moon Safari - 43906942</title>                                                                                                                                                                                                     
+  <url>http://static.rhap.com/img/500x500/7/5/9/1/2301957_500x500.jpg</url>                                                                                                                                                                 
+  <width>500</width>                                                                                                                                                                                                                        
+</ImageMetadata> 
+
