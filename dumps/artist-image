@@ -1,0 +1,44 @@
+
+Request
+-------
+
+2012-06-17 09:36:27 GET http://direct.rhapsody.com/metadata/data/getImageForArtist.xml?height=237&width=356&cobrandId=40134&defineAction=-1&developerKey=4E1C2E3G4C9H9A2F&artistId=Art.6829&                                                
+                        ← 200 text/xml 222B                                                                                                                                                                                                 
+Request                                                                                                               Response                                                                                                              
+Host:              direct.rhapsody.com                                                                                                                                                                                                      
+User-Agent:        Rhapsody/2.2.11 CFNetwork/548.1.4 Darwin/11.0.0                                                                                                                                                                          
+Accept:            */*                                                                                                                                                                                                                      
+Accept-Encoding:   gzip,deflate                                                                                                                                                                                                             
+Accept-Language:   en-us                                                                                                                                                                                                                    
+Connection:        keep-alive                                                                                                                                                                                                               
+Proxy-Connection:  keep-alive    
+
+
+Response
+--------
+
+Server:            Apache-Coyote/1.1                                                                                                                                                                                                        
+Content-Type:      text/xml;charset=UTF-8                                                                                                                                                                                                   
+Cteonnt-Length:    303                                                                                                                                                                                                                      
+X-Varnish:         1934009681                                                                                                                                                                                                               
+Cneonction:        close                                                                                                                                                                                                                    
+Content-Encoding:  gzip                                                                                                                                                                                                                     
+Content-Length:    222                                                                                                                                                                                                                      
+Vary:              Accept-Encoding                                                                                                                                                                                                          
+Expires:           Sun, 17 Jun 2012 16:36:28 GMT                                                                                                                                                                                            
+Cache-Control:     max-age=0, no-cache, no-store                                                                                                                                                                                            
+Pragma:            no-cache                                                                                                                                                                                                                 
+Date:              Sun, 17 Jun 2012 16:36:28 GMT                                                                                                                                                                                            
+Connection:        keep-alive                                                                                                                                                                                                               
+[decoded gzip] XML-like data                                                                                                                                                                                                                
+<?xml version='1.0' encoding='UTF-8'?>                                                                                                                                                                                                      
+<ImageMetadata>                                                                                                                                                                                                                             
+  <copyright>Listen</copyright>                                                                                                                                                                                                             
+  <height>237</height>                                                                                                                                                                                                                      
+  <imageFormat>jpg</imageFormat>                                                                                                                                                                                                            
+  <imageId>img.30356637</imageId>                                                                                                                                                                                                           
+  <title>Air - 30356637</title>                                                                                                                                                                                                             
+  <url>http://static.rhap.com/img/356x237/4/7/1/5/1815174_356x237.jpg</url>                                                                                                                                                                 
+  <width>356</width>                                                                                                                                                                                                                        
+</ImageMetadata>    
+
