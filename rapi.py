@@ -16,6 +16,7 @@ _artimg_url = "http://direct.rhapsody.com/metadata/data/getImageForArtist.xml?%s
 _album_url = "http://direct.rhapsody.com/metadata/data/getAlbum.xml?%s"
 _track_url = "http://direct.rhapsody.com/metadata/data/getTrack.xml?%s"
 _stream_url = "https://playback.rhapsody.com/getContent.xml"
+_lib_url = "https://direct.rhapsody.com/library/data/getAllTracksInLibrary.xml?%s"
 
 
 FORMAT_AAC_192      =   "AAC_192"   """ 192 kbps AAC audio """
@@ -247,4 +248,24 @@ def auth(username, password):
     
     res.close()
     return Session(username, password, cobrandId, token, userGuid)
+
+def library(session):
+    """ Returns a list of IDs of tracks in the user's library """
+    data = urllib.urlencode({
+        "cobrandId": session.cobrandId,
+        "developerKey": _dev_key,
+        "logon": session.username,
+        "password": session.password,
+    })
+
+    req = urllib2.Request(_lib_url, data)
+    res = urllib2.urlopen(req)
+    xml = ET.fromstring(res.read())
+
+    tracks = []
+
+    for node in xml.findall("tracks/e/trackId"):
+        tracks.append(node.text)
+        
+    return tracks
 

@@ -48,8 +48,14 @@ if __name__ == '__main__':
     print track.genre
     print
 
-    stream = track.stream(sess, rapi.FORMAT_AAC_192)
+    library = rapi.library(sess)
+    print "Your library has %d tracks" % len(library)
+    for i in range(10):
+        print library[i], " ",
+    print
+    print
 
+    stream = track.stream(sess, rapi.FORMAT_AAC_192)
     # XXX does this treat the strings as text and modify the content?
     content = stream.read()
     dump = open("test.m4a", "w+")
