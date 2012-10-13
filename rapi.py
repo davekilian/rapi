@@ -7,7 +7,13 @@ import urllib
 import urllib2
 import xml.etree.ElementTree as ET
 
+
+_dev_key = "4E1C2E3G4C9H9A2F"
+_filter = "18"
 _login_url = "https://playback.rhapsody.com/login.xml"
+_artist_url = "http://direct.rhapsody.com/metadata/data/getArtist.xml?%s"
+_artimg_url = "http://direct.rhapsody.com/metadata/data/getImageForArtist.xml?%s"
+
 
 class Session:
     """ Caches information about the user currently logged in """
@@ -25,6 +31,7 @@ class Session:
         self.token = token
         self.userGuid = userGuid
 
+
 class Artist:
     """
     Artist metadata
@@ -38,16 +45,56 @@ class Artist:
 
     id = ""
     name = ""
+    bio = ""
     image = ""
-    albums = []
+    albumids = []
 
     @staticmethod
-    def read(session, id):
+    def read(session, id, image = True):
         """
         Returns an Artist object containing information about the artist
-        with the given artist ID
+        with the given artist ID.
+
+        If image is false, the call will return sooner (since only HTTP
+        request is required), but the Artist.image property of the artist
+        returned will have the value None
         """
-        pass
+        data = urllib.urlencode({
+            "cobrandId": session.cobrandId,
+            "developerKey": _dev_key,
+            "filterRightsKey": _filter,
+            "artistId": id,
+        })
+
+        req = urllib2.Request(_artist_url, data)
+        res = urllib2.urlopen(req)
+        xml = ET.fromstring(res.read())
+
+        art = Artist()
+        art.id = id
+        art.name = xml.find("name").text
+        art.bio = xml.find("bio").text + "\n\n--" + xml.find("bioAuthor").text
+
+        for node in xml.findall("albums/e/albumId"):
+            art.albumids.append(node.text)
+
+        if image:
+            data = urllib.urlencode({
+                "cobrandId": session.cobrandId,
+                "developerKey": _dev_key,
+                "defineAction": -1,
+                "width": 356,
+                "height": 237,
+                "artistId": id,
+            })
+
+            req = urllib2.Request(_artimg_url, data)
+            res = urllib2.urlopen(req)
+            xml = ET.fromstring(res.read())
+            art.image = xml.find("url").text
+
+        return art
+
 
 class Album:
     """
@@ -77,6 +124,7 @@ class Album:
         with the given album ID
         """
         pass
+
 
 class Track:
     """
