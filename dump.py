@@ -73,7 +73,7 @@ def handle(trackid, outdir, sess):
     flush()
 
     if not track.artistid in artists:
-        artist = Artist.read(sess, track.artistid)
+        artist = Artist.read(sess, track.artistid, False)
         artists[artist.id] = artist
     else:
         artist = artists[track.artistid]
@@ -131,7 +131,11 @@ def main():
     flush()
 
     for i in range(len(lib)):
-        handle(lib[i], outdir, sess)
+        print "[%d of %d]" % (i + 1, len(lib)),
+        try:
+            handle(lib[i], outdir, sess)
+        except:
+            print "error"
 
 
 if __name__ == '__main__':
