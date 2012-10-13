@@ -6,6 +6,7 @@ Unofficial API for obtaining metadata and streams for http://www.rhapsody.com
 import urllib
 import urllib2
 import xml.etree.ElementTree as ET
+from titlecase import titlecase
 
 
 _login_url = "https://playback.rhapsody.com/login.xml"
@@ -77,7 +78,7 @@ class Artist:
         xml = ET.fromstring(res.read())
 
         art = Artist()
-        art.name = xml.find("name").text
+        art.name = titlecase(xml.find("name").text)
 
         for node in xml.findall("albums/e/albumId"):
             art.albumids.append(node.text)
@@ -140,7 +141,7 @@ class Album:
         alb = Album()
         alb.id = id
         alb.artistid = xml.find("primaryArtist/artistId").text
-        alb.name = xml.find("displayName").text
+        alb.name = titlecase(xml.find("displayName").text)
         alb.art = xml.find("albumArt162x162Url").text
         alb.year = int(xml.find("releaseYear").text)
 
@@ -193,7 +194,7 @@ class Track:
         track.id = id
         track.artistid = xml.find("albumMetadata/primaryArtistId").text
         track.albumid = xml.find("albumId").text
-        track.name = xml.find("name").text
+        track.name = titlecase(xml.find("name").text)
         track.number = int(xml.find("trackIndex").text)
         track.duration = int(xml.find("playbackSeconds").text)
         track.genre = xml.find("albumMetadata/primaryStyle").text
