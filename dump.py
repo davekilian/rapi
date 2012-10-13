@@ -22,7 +22,7 @@ def safepath(name):
     return re.sub("[\/:\\*\\?\"<>|]", "_", name)
 
 
-def retag(songfile, filepath, artist, album, track):
+def retag(filepath, artist, album, track):
     TAG_TITLE       = "\xa9nam"
     TAG_ALBUM       = "\xa9alb"
     TAG_ARTIST      = "\xa9ART"
@@ -38,6 +38,9 @@ def retag(songfile, filepath, artist, album, track):
 
     t = MP4()
     t.load(filepath)
+    if t.tags == None:
+        t.add_tags()
+
     t.tags[TAG_TITLE] = track.name
     t.tags[TAG_ALBUM] = album.name
     t.tags[TAG_ARTIST] = artist.name
@@ -87,9 +90,9 @@ def handle(trackid, outdir, sess):
 
     content = track.stream(sess, rapi.FORMAT_AAC_192).read()
     outfile.write(content)
-
-    retag(outfile, path, artist, album, track)
     outfile.close()
+
+    retag(path, artist, album, track)
 
     print "done"
     flush()

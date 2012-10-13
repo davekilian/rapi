@@ -52,7 +52,6 @@ class Artist:
 
     id = ""
     name = ""
-    bio = ""
     image = ""
     albumids = []
 
@@ -78,7 +77,6 @@ class Artist:
         xml = ET.fromstring(res.read())
 
         art = Artist()
-        art.id = id
         art.name = xml.find("name").text
         art.bio = xml.find("bio").text + "\n\n--" + xml.find("bioAuthor").text
 

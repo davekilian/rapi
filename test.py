@@ -21,7 +21,6 @@ if __name__ == '__main__':
     art = Artist.read(sess, sample_artist)
     print art.id
     print art.name
-    print art.bio
     print art.image
     for alb in art.albumids:
         print alb, " ",
