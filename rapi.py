@@ -14,6 +14,7 @@ _login_url = "https://playback.rhapsody.com/login.xml"
 _artist_url = "http://direct.rhapsody.com/metadata/data/getArtist.xml?%s"
 _artimg_url = "http://direct.rhapsody.com/metadata/data/getImageForArtist.xml?%s"
 _album_url = "http://direct.rhapsody.com/metadata/data/getAlbum.xml?%s"
+_track_url = "http://direct.rhapsody.com/metadata/data/getTrack.xml?%s"
 
 
 class Session:
@@ -165,6 +166,7 @@ class Track:
     albumid = ""
     name = ""
     duration = 0
+    genre = ""
 
     @staticmethod
     def read(session, id):
@@ -172,7 +174,26 @@ class Track:
         Returns an Track object containing information about the track
         with the given track ID
         """
-        pass
+        data = urllib.urlencode({
+            "cobrandId": session.cobrandId,
+            "developerKey": _dev_key,
+            "filterRightsKey": _filter, # XXX 18 or 0?
+            "trackId": id,
+        })
+
+        req = urllib2.Request(_track_url, data)
+        res = urllib2.urlopen(req)
+        xml = ET.fromstring(res.read())
+
+        track = Track()
+        track.id = id
+        track.artistid = xml.find("albumMetadata/primaryArtistId").text
+        track.albumid = xml.find("albumId").text
+        track.name = xml.find("name").text
+        track.duration = int(xml.find("playbackSeconds").text)
+        track.genre = xml.find("albumMetadata/primaryStyle").text
+
+        return track
 
 
 def auth(username, password):

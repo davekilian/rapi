@@ -39,5 +39,12 @@ if __name__ == '__main__':
     print
     print
 
-
+    track = Track.read(sess, sample_track)
+    print track.id
+    print track.artistid
+    print track.albumid
+    print track.name
+    print track.duration
+    print track.genre
+    print
 
