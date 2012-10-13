@@ -78,7 +78,6 @@ class Artist:
 
         art = Artist()
         art.name = xml.find("name").text
-        art.bio = xml.find("bio").text + "\n\n--" + xml.find("bioAuthor").text
 
         for node in xml.findall("albums/e/albumId"):
             art.albumids.append(node.text)
