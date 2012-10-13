@@ -44,6 +44,7 @@ if __name__ == '__main__':
     print track.artistid
     print track.albumid
     print track.name
+    print track.number
     print track.duration
     print track.genre
     print

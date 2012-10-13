@@ -170,6 +170,7 @@ class Track:
     artistid = ""
     albumid = ""
     name = ""
+    number = 0
     duration = 0
     genre = ""
 
@@ -195,6 +196,7 @@ class Track:
         track.artistid = xml.find("albumMetadata/primaryArtistId").text
         track.albumid = xml.find("albumId").text
         track.name = xml.find("name").text
+        track.number = int(xml.find("trackIndex").text)
         track.duration = int(xml.find("playbackSeconds").text)
         track.genre = xml.find("albumMetadata/primaryStyle").text
 
@@ -219,11 +221,10 @@ class Track:
         xml = ET.fromstring(res.read())
 
         url = xml.find("data/mediaUrl").text
-        print url
-
         req = urllib2.Request(url)
         for key in headers:
             req.add_header(key, headers[key])
+
         return urllib2.urlopen(req)
 
 
