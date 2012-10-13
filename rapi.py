@@ -8,8 +8,6 @@ import urllib2
 import xml.etree.ElementTree as ET
 
 
-_dev_key = "4E1C2E3G4C9H9A2F"
-_filter = "18"
 _login_url = "https://playback.rhapsody.com/login.xml"
 _artist_url = "http://direct.rhapsody.com/metadata/data/getArtist.xml?%s"
 _artimg_url = "http://direct.rhapsody.com/metadata/data/getImageForArtist.xml?%s"
@@ -17,13 +15,15 @@ _album_url = "http://direct.rhapsody.com/metadata/data/getAlbum.xml?%s"
 _track_url = "http://direct.rhapsody.com/metadata/data/getTrack.xml?%s"
 _stream_url = "https://playback.rhapsody.com/getContent.xml"
 _lib_url = "https://direct.rhapsody.com/library/data/getAllTracksInLibrary.xml?%s"
+_dev_key = "4E1C2E3G4C9H9A2F"
+_filter = "18"
 
 
 FORMAT_AAC_192      =   "AAC_192"   """ 192 kbps AAC audio """
 
 
 class Session:
-    """ Caches information about the user currently logged in """
+    """ Caches information about the currently logged-in user """
 
     username = ""
     password = ""
@@ -61,7 +61,7 @@ class Artist:
         Returns an Artist object containing information about the artist
         with the given artist ID.
 
-        If image is false, the call will return sooner (since only HTTP
+        If image is False, the call will return sooner (since only HTTP
         request is required), but the Artist.image property of the artist
         returned will have the value None
         """
@@ -110,7 +110,6 @@ class Album:
         name [str]      The human-readable name of this album
         art [str]       A URL To an image containing the album's album art
         year [int]      The year this album was released
-        genre [str]     The genre the album is filed under
         trackids [list] A list of IDs [str] of the tracks in this artist
     """
 
@@ -130,7 +129,7 @@ class Album:
         data = urllib.urlencode({
             "cobrandId": session.cobrandId,
             "developerKey": _dev_key,
-            "filterRightsKey": _filter, # XXX 18 or 0?
+            "filterRightsKey": _filter,
             "albumId": id,
         })
 
@@ -160,7 +159,9 @@ class Track:
         artistid [str]  The ID of the track's album's album artist
         albumid [str]   The ID of the album the track appears on
         name [str]      The title of the track
+        number [int]    The position of this track on its album
         duration [int]  The length of the track in seconds
+        genre [str]     The musical genre of this track
     """
 
     id = ""
@@ -180,7 +181,7 @@ class Track:
         data = urllib.urlencode({
             "cobrandId": session.cobrandId,
             "developerKey": _dev_key,
-            "filterRightsKey": _filter, # XXX 18 or 0?
+            "filterRightsKey": _filter,
             "trackId": id,
         })
 
@@ -202,7 +203,7 @@ class Track:
     def stream(self, session, format):
         """
         Begins streaming this track in the given format. Returns a file-
-        like object that returns the binary audio stream.
+        like object that contains the binary audio stream.
         """
         data = urllib.urlencode({
             "br": format,
@@ -250,6 +251,7 @@ def auth(username, password):
 
 def library(session):
     """ Returns a list of IDs of tracks in the user's library """
+
     data = urllib.urlencode({
         "cobrandId": session.cobrandId,
         "developerKey": _dev_key,
@@ -267,4 +269,5 @@ def library(session):
         tracks.append(node.text)
         
     return tracks
+
 
