@@ -7,9 +7,10 @@ sample_artist = "Art.6774631"
 sample_album = "Alb.9999950"
 sample_track = "Tra.10013054"
 
+username = "dave2343@gmail.com"
+password = "lolhackathon"
+
 if __name__ == '__main__':
-    username = open(".username").read()
-    password = open(".password").read()
     sess = rapi.auth(username, password)
 
     print sess.cobrandId
