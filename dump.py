@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import os, rapi, re, sys
+import os, rapi, re, sys, urllib, urllib2
+from mutagen.mp4 import *
 from rapi import Artist, Album, Track
 
 
@@ -20,6 +21,35 @@ def flush():
 def safepath(name):
     return re.sub("[\/:\\*\\?\"<>|]", "_", name)
 
+
+def retag(songfile, filepath, artist, album, track):
+    TAG_TITLE       = "\xa9nam"
+    TAG_ALBUM       = "\xa9alb"
+    TAG_ARTIST      = "\xa9ART"
+    TAG_ALB_ARTIST  = "aART"
+    TAG_YEAR        = "\xa9day"
+    TAG_GENRE       = "\xa9gen"
+    TAG_GAPLESS     = "pgap"
+    TAG_TRACKNUM    = "trkn"
+    TAG_DISKNUM     = "disk"
+    TAG_COVER       = "covr"
+
+    cover = urllib2.urlopen(album.art).read()
+
+    t = MP4()
+    t.load(filepath)
+    t.tags[TAG_TITLE] = track.name
+    t.tags[TAG_ALBUM] = album.name
+    t.tags[TAG_ARTIST] = artist.name
+    t.tags[TAG_ALB_ARTIST] = artist.name
+    t.tags[TAG_YEAR] = str(album.year)
+    t.tags[TAG_GENRE] = track.genre
+    t.tags[TAG_GAPLESS] = True
+    t.tags[TAG_TRACKNUM] = [ (track.number, len(album.trackids)) ]
+    t.tags[TAG_DISKNUM] = [ (1, 1) ]
+    t.tags[TAG_COVER] = [ MP4Cover(cover) ]
+
+    t.tags.save(filepath)
 
 artists = {}
 albums = {}
@@ -57,6 +87,8 @@ def handle(trackid, outdir, sess):
 
     content = track.stream(sess, rapi.FORMAT_AAC_192).read()
     outfile.write(content)
+
+    retag(outfile, path, artist, album, track)
     outfile.close()
 
     print "done"
