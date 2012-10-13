@@ -249,6 +249,7 @@ def auth(username, password):
     res.close()
     return Session(username, password, cobrandId, token, userGuid)
 
+
 def library(session):
     """ Returns a list of IDs of tracks in the user's library """
     data = urllib.urlencode({
