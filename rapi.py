@@ -77,7 +77,7 @@ class Track:
     duration = 0
 
 
-def log_in(username, password):
+def auth(username, password):
     """
     Opens a session with Rhapsody's API sever, using the supplied user
     credentials. Returns a rapi.Session containing user information, which
