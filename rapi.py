@@ -12,11 +12,15 @@ _login_url = "https://playback.rhapsody.com/login.xml"
 class Session:
     """ Caches information about the user currently logged in """
 
+    username = ""
+    password = ""
     cobrandId = ""
     token = ""
     userGuid = ""
 
-    def __init__(self, cobrandId, token, userGuid):
+    def __init__(self, username, password, cobrandId, token, userGuid):
+        self.username = username
+        self.password = password
         self.cobrandId = cobrandId
         self.token = token
         self.userGuid = userGuid
@@ -36,6 +40,14 @@ class Artist:
     name = ""
     image = ""
     albums = []
+
+    @staticmethod
+    def read(session, id):
+        """
+        Returns an Artist object containing information about the artist
+        with the given artist ID
+        """
+        pass
 
 class Album:
     """
@@ -58,6 +70,14 @@ class Album:
     genre = ""
     tracks = []
 
+    @staticmethod
+    def read(session, id):
+        """
+        Returns an Album object containing information about the album
+        with the given album ID
+        """
+        pass
+
 class Track:
     """
     Track metadata
@@ -75,6 +95,14 @@ class Track:
     albumid = ""
     name = ""
     duration = 0
+
+    @staticmethod
+    def read(session, id):
+        """
+        Returns an Track object containing information about the track
+        with the given track ID
+        """
+        pass
 
 
 def auth(username, password):
@@ -97,6 +125,5 @@ def auth(username, password):
     userGuid = xml.find("data/userGuid").text
     
     res.close()
-    return Session(cobrandId, token, userGuid)
-
+    return Session(username, password, cobrandId, token, userGuid)
 
