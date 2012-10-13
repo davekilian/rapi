@@ -25,8 +25,19 @@ if __name__ == '__main__':
     print art.image
     for alb in art.albumids:
         print alb, " ",
+    print 
     print
 
+    alb = Album.read(sess, sample_album)
+    print alb.id
+    print alb.artistid
+    print alb.name
+    print alb.art
+    print alb.year
+    for tra in alb.trackids:
+        print tra, " ",
+    print
+    print
 
 
 

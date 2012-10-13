@@ -13,6 +13,7 @@ _filter = "18"
 _login_url = "https://playback.rhapsody.com/login.xml"
 _artist_url = "http://direct.rhapsody.com/metadata/data/getArtist.xml?%s"
 _artimg_url = "http://direct.rhapsody.com/metadata/data/getImageForArtist.xml?%s"
+_album_url = "http://direct.rhapsody.com/metadata/data/getAlbum.xml?%s"
 
 
 class Session:
@@ -111,11 +112,11 @@ class Album:
     """
 
     id = ""
-    naem = ""
+    artistid = ""
+    name = ""
     art = ""
-    year = 2000
-    genre = ""
-    tracks = []
+    year = 1900
+    trackids = []
 
     @staticmethod
     def read(session, id):
@@ -123,7 +124,28 @@ class Album:
         Returns an Album object containing information about the album
         with the given album ID
         """
-        pass
+        data = urllib.urlencode({
+            "cobrandId": session.cobrandId,
+            "developerKey": _dev_key,
+            "filterRightsKey": _filter, # XXX 18 or 0?
+            "albumId": id,
+        })
+
+        req = urllib2.Request(_album_url, data)
+        res = urllib2.urlopen(req)
+        xml = ET.fromstring(res.read())
+
+        alb = Album()
+        alb.id = id
+        alb.artistid = xml.find("primaryArtist/artistId").text
+        alb.name = xml.find("displayName").text
+        alb.art = xml.find("albumArt162x162Url").text
+        alb.year = int(xml.find("releaseYear").text)
+
+        for node in xml.findall("trackMetadatas/e/trackId"):
+            alb.trackids.append(node.text)
+
+        return alb
 
 
 class Track:
