@@ -15,6 +15,10 @@ _artist_url = "http://direct.rhapsody.com/metadata/data/getArtist.xml?%s"
 _artimg_url = "http://direct.rhapsody.com/metadata/data/getImageForArtist.xml?%s"
 _album_url = "http://direct.rhapsody.com/metadata/data/getAlbum.xml?%s"
 _track_url = "http://direct.rhapsody.com/metadata/data/getTrack.xml?%s"
+_stream_url = "https://playback.rhapsody.com/getContent.xml"
+
+
+FORMAT_AAC_192      =   "AAC_192"   """ 192 kbps AAC audio """
 
 
 class Session:
@@ -194,6 +198,32 @@ class Track:
         track.genre = xml.find("albumMetadata/primaryStyle").text
 
         return track
+
+    def stream(self, session, format):
+        """
+        Begins streaming this track in the given format. Returns a file-
+        like object that returns the binary audio stream.
+        """
+        data = urllib.urlencode({
+            "br": format,
+            "trackId": self.id,
+        })
+        headers = {
+            "token": session.token,
+            "pcode": "mobile_iphone",
+        }
+
+        req = urllib2.Request(_stream_url, data, headers)
+        res = urllib2.urlopen(req)
+        xml = ET.fromstring(res.read())
+
+        url = xml.find("data/mediaUrl").text
+        print url
+
+        req = urllib2.Request(url)
+        for key in headers:
+            req.add_header(key, headers[key])
+        return urllib2.urlopen(req)
 
 
 def auth(username, password):
