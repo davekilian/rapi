@@ -98,6 +98,27 @@ def handle(trackid, outdir, sess):
     flush()
 
 
+manifest = set()
+def load_manifest(outdir):
+    global manifest
+    try:
+        path = os.path.join(outdir, '.rapi-manifest')
+        f = open(path, 'r')
+        tracklist = [ t.strip() for t in f.readlines() ]
+        manifest = set(tracklist)
+        f.close()
+    except IOError:
+        pass
+
+def append_manifest(outdir, trackid):
+    global manifest
+    manifest.add(trackid)
+
+    path = os.path.join(outdir, '.rapi-manifest')
+    f = open(path, 'a+')
+    f.write(trackid + '\n')
+    f.close()
+
 def main():
     if len(sys.argv) < 2:
         usage()
@@ -119,6 +140,10 @@ def main():
         f = open("./.password")
         password = f.read()
 
+    print "Loading manifest...",
+    load_manifest(outdir)
+    print "%d track(s)" % len(manifest)
+
     print "Authenticating as %s..." % username,
     flush()
     sess = rapi.auth(username, password)
@@ -132,10 +157,14 @@ def main():
 
     for i in range(len(lib)):
         print "[%d of %d]" % (i + 1, len(lib)),
-        try:
-            handle(lib[i], outdir, sess)
-        except:
-            print "error"
+        if lib[i] in manifest:
+            print "skipped (in manifest)"
+        else:
+            try:
+                handle(lib[i], outdir, sess)
+                append_manifest(outdir, lib[i])
+            except:
+                print "error"
 
 
 if __name__ == '__main__':
