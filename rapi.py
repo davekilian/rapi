@@ -14,6 +14,7 @@ _artist_url = "http://direct.rhapsody.com/metadata/data/getArtist.xml?%s"
 _artimg_url = "http://direct.rhapsody.com/metadata/data/getImageForArtist.xml?%s"
 _album_url = "http://direct.rhapsody.com/metadata/data/getAlbum.xml?%s"
 _track_url = "http://direct.rhapsody.com/metadata/data/getTrack.xml?%s"
+_albumart_url = "http://direct.rhapsody.com/imageserver/v2/albums/%s/images/500x500.jpg"
 _stream_url = "https://playback.rhapsody.com/getContent.xml"
 _lib_url = "https://direct.rhapsody.com/library/data/getAllTracksInLibrary.xml?%s"
 _dev_key = "4E1C2E3G4C9H9A2F"
@@ -142,7 +143,7 @@ class Album:
         alb.id = id
         alb.artistid = xml.find("primaryArtist/artistId").text
         alb.name = titlecase(xml.find("displayName").text)
-        alb.art = xml.find("albumArt162x162Url").text
+        alb.art = _albumart_url % id
         alb.year = int(xml.find("releaseYear").text)
 
         for node in xml.findall("trackMetadatas/e/trackId"):
