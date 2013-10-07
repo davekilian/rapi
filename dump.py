@@ -49,7 +49,7 @@ def retag(filepath, artist, album, track):
     t.tags[TAG_GENRE] = track.genre
     t.tags[TAG_GAPLESS] = True
     t.tags[TAG_TRACKNUM] = [ (track.number, len(album.trackids)) ]
-    t.tags[TAG_DISKNUM] = [ (1, 1) ]
+    t.tags[TAG_DISKNUM] = [ (track.disc, album.numDiscs) ]
     t.tags[TAG_COVER] = [ MP4Cover(cover) ]
 
     t.tags.save(filepath)

@@ -120,6 +120,7 @@ class Album:
     name = ""
     art = ""
     year = 1900
+    numDiscs = 0
     trackids = []
 
     @staticmethod
@@ -145,6 +146,7 @@ class Album:
         alb.name = titlecase(xml.find("displayName").text)
         alb.art = _albumart_url % id
         alb.year = int(xml.find("releaseYear").text)
+        alb.numDiscs = int(xml.find("numberOfDiscs").text)
 
         for node in xml.findall("trackMetadatas/e/trackId"):
             alb.trackids.append(node.text)
@@ -173,6 +175,7 @@ class Track:
     number = 0
     duration = 0
     genre = ""
+    disc = 0
 
     @staticmethod
     def read(session, id):
@@ -199,6 +202,7 @@ class Track:
         track.number = int(xml.find("trackIndex").text)
         track.duration = int(xml.find("playbackSeconds").text)
         track.genre = xml.find("albumMetadata/primaryStyle").text
+        track.disc = int(xml.find("discIndex").text)
 
         return track
 

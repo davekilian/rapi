@@ -33,6 +33,7 @@ if __name__ == '__main__':
     print alb.name
     print alb.art
     print alb.year
+    print alb.numDiscs
     for tra in alb.trackids:
         print tra, " ",
     print
@@ -46,6 +47,7 @@ if __name__ == '__main__':
     print track.number
     print track.duration
     print track.genre
+    print track.disc
     print
 
     library = rapi.library(sess)
