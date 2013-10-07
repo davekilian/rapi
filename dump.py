@@ -34,7 +34,11 @@ def retag(filepath, artist, album, track):
     TAG_DISKNUM     = "disk"
     TAG_COVER       = "covr"
 
-    cover = urllib2.urlopen(album.art).read()
+    try:
+        cover = urllib2.urlopen(album.art).read()
+    except urllib2.HTTPError:
+        # Probably a 404 -- not much we can do here
+        cover = None
 
     t = MP4()
     t.load(filepath)
@@ -50,7 +54,9 @@ def retag(filepath, artist, album, track):
     t.tags[TAG_GAPLESS] = True
     t.tags[TAG_TRACKNUM] = [ (track.number, len(album.trackids)) ]
     t.tags[TAG_DISKNUM] = [ (track.disc, album.numDiscs) ]
-    t.tags[TAG_COVER] = [ MP4Cover(cover) ]
+
+    if cover:
+        t.tags[TAG_COVER] = [ MP4Cover(cover) ]
 
     t.tags.save(filepath)
 
@@ -60,7 +66,15 @@ def handle(trackid, outdir, sess):
     print trackid,
     flush()
 
-    track = Track.read(sess, trackid)
+    try:
+        track = Track.read(sess, trackid)
+    except AttributeError:
+        # This usually happens because the server returned an 
+        # HTTPInterfaceException, perhaps because the file wasn't found. 
+        # We'll just move on.
+        print "not found on server"
+        return
+
     print track.name, 
     flush()
 
